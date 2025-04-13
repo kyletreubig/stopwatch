@@ -2,12 +2,15 @@
   "name": "stopwatch",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://kyletreubig.github.io/stopwatch",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "predeploy": "pnpm run build",
+    "deploy": "gh-pages -d dist",
     "format:check": "prettier . --check",
     "format": "prettier . --write",
     "prepare": "husky"
@@ -26,6 +29,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
+    "@types/node": "^22.14.1",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
@@ -33,6 +37,7 @@
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
+    "gh-pages": "^6.3.0",
     "globals": "^15.15.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.1",
