@@ -6,12 +6,14 @@ import { formatDate } from "@/utils/format-date";
 import { getWeekdayName } from "@/utils/get-weekday-name";
 
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 export function DateSelection() {
   const { currentDate, datesOfWeek } = useDates();
 
   return (
-    <div className="flex flex-col gap-4 items-center">
+    <div className="flex flex-col gap-4 items-center border p-2 rounded shadow">
       <div className="flex gap-1">
         <Button size="icon" variant="outline">
           <ChevronLeft />
@@ -28,17 +30,14 @@ export function DateSelection() {
           <ChevronRight />
         </Button>
       </div>
-      <div>{formatDate(currentDate, { long: true })}</div>
-      <div className="flex flex-col gap-2">
-        <label htmlFor="date" className="text-sm font-medium">
-          Select a date:
-        </label>
-        <input
-          type="date"
-          id="date"
-          className="border border-gray-300 rounded-md p-2"
-        />
+      <div className="flex gap-4 items-center">
+        <Label className="text-nowrap" htmlFor="date2">
+          Go to
+        </Label>
+        <Input type="date" id="date2" />
+        <Button variant="outline">Today</Button>
       </div>
+      <div>{formatDate(currentDate, { long: true })}</div>
     </div>
   );
 }
