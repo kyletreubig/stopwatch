@@ -1,43 +1,67 @@
-import { isEqual } from "date-fns";
+import { addDays, isEqual, subDays } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useMemo } from "react";
 
-import { useDates } from "@/hooks/use-dates";
+import { useDateSelectionStore } from "@/stores/date-selection";
+import { datesOfWeek } from "@/utils/dates-of-week";
 import { formatDate } from "@/utils/format-date";
 import { getWeekdayName } from "@/utils/get-weekday-name";
+import { parseDate } from "@/utils/parse-date";
 
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
 export function DateSelection() {
-  const { currentDate, datesOfWeek } = useDates();
+  const selectedDate = useDateSelectionStore.use.selectedDate();
+  const setSelectedDate = useDateSelectionStore.use.setSelectedDate();
+
+  const week = useMemo(() => datesOfWeek(selectedDate), [selectedDate]);
 
   return (
     <div className="flex flex-col gap-4 items-center border p-2 rounded shadow">
       <div className="flex gap-1">
-        <Button size="icon" variant="outline">
+        <Button
+          onClick={() => setSelectedDate(subDays(selectedDate, 7))}
+          size="icon"
+          variant="outline"
+        >
           <ChevronLeft />
         </Button>
-        {datesOfWeek.map((date) => (
+        {week.map((date) => (
           <Button
             key={date.toString()}
-            variant={isEqual(date, currentDate) ? "default" : "outline"}
+            onClick={() => setSelectedDate(date)}
+            variant={isEqual(date, selectedDate) ? "default" : "outline"}
           >
             {getWeekdayName(date).at(0)}
           </Button>
         ))}
-        <Button size="icon" variant="outline">
+        <Button
+          onClick={() => setSelectedDate(addDays(selectedDate, 7))}
+          size="icon"
+          variant="outline"
+        >
           <ChevronRight />
         </Button>
       </div>
       <div className="flex gap-4 items-center">
-        <Label className="text-nowrap" htmlFor="date2">
+        <Label className="text-nowrap" htmlFor="date">
           Go to
         </Label>
-        <Input type="date" id="date2" />
-        <Button variant="outline">Today</Button>
+        <Input
+          id="date"
+          onChange={(e) =>
+            e.target.value && setSelectedDate(parseDate(e.target.value))
+          }
+          type="date"
+          value={formatDate(selectedDate)}
+        />
+        <Button onClick={() => setSelectedDate(new Date())} variant="outline">
+          Today
+        </Button>
       </div>
-      <div>{formatDate(currentDate, { long: true })}</div>
+      <div>{formatDate(selectedDate, { long: true })}</div>
     </div>
   );
 }
