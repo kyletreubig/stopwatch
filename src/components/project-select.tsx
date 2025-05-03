@@ -9,7 +9,7 @@ import {
 export function ProjectSelect() {
   return (
     <Select>
-      <SelectTrigger>
+      <SelectTrigger className="w-full">
         <SelectValue placeholder="Select project" />
       </SelectTrigger>
       <SelectContent>
