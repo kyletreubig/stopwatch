@@ -61,7 +61,6 @@ export function DateSelection() {
           Today
         </Button>
       </div>
-      <div>{formatDate(selectedDate, { long: true })}</div>
     </div>
   );
 }
