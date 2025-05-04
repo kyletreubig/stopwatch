@@ -9,13 +9,13 @@ export function Daily() {
   const selectedDate = useDateSelectionStore.use.selectedDate();
   return (
     <Tabs className="p-4 border rounded shadow" defaultValue="input">
-      <div className="flex justify-between">
-        <h2>{formatDate(selectedDate, { long: true })}</h2>
+      <h2 className="flex justify-between">
+        <span>{formatDate(selectedDate, { long: true })}</span>
         <TabsList>
           <TabsTrigger value="input">Input</TabsTrigger>
           <TabsTrigger value="summary">Summary</TabsTrigger>
         </TabsList>
-      </div>
+      </h2>
 
       <TabsContent value="input">
         <DailyInput />
