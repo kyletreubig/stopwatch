@@ -2,7 +2,7 @@ import { useDateSelectionStore } from "@/stores/date-selection";
 import { formatDate } from "@/utils/format-date";
 
 import { DailyInput } from "./daily-input";
-import { DailySummary } from "./daiy-summary";
+import { DailySummary } from "./daily-summary";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
 export function Daily() {
