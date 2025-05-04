@@ -1,4 +1,4 @@
-import { Play, Plus } from "lucide-react";
+import { AlertCircle, Play, Plus, RefreshCw } from "lucide-react";
 import { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -7,8 +7,10 @@ import { type WorkEntry } from "@/db";
 import { calcDuration } from "@/utils/calc-duration";
 import { formatTime } from "@/utils/format-time";
 import { parseTime } from "@/utils/parse-time";
+import { validateWorkEntry } from "@/utils/validate-work-entry";
 
 import { ProjectSelect } from "./project-select";
+import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
@@ -35,11 +37,19 @@ export function AddWorkEntry({
   const endTime = form.watch("endTime");
   const duration = endTime ? calcDuration(startTime, endTime) : 0;
 
+  const errorMsg = useMemo(
+    () => validateWorkEntry(startTime, endTime, entries),
+    [startTime, endTime, entries],
+  );
+
   const onSubmit = (data: Inputs) => addWorkEntry(data);
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)}>
-      <div className="grid grid-cols-[1fr_auto_1fr_1fr_1fr_auto] gap-2 items-center">
+    <form
+      className="flex flex-col gap-4 mt-4"
+      onSubmit={form.handleSubmit(onSubmit)}
+    >
+      <div className="grid grid-cols-[1fr_auto_1fr_1fr_1fr_auto_auto] gap-2 items-center">
         <Controller
           name="startTime"
           control={form.control}
@@ -80,7 +90,10 @@ export function AddWorkEntry({
         />
         <Button
           disabled={
-            disabled || !form.formState.isDirty || !form.formState.isValid
+            disabled ||
+            !form.formState.isDirty ||
+            !form.formState.isValid ||
+            Boolean(errorMsg)
           }
           type="submit"
         >
@@ -94,7 +107,22 @@ export function AddWorkEntry({
             </>
           )}
         </Button>
+        <Button
+          onClick={() => form.reset()}
+          size="icon"
+          type="reset"
+          variant="outline"
+        >
+          <RefreshCw />
+        </Button>
       </div>
+      {form.formState.isDirty && errorMsg && (
+        <Alert variant="destructive">
+          <AlertCircle className="size-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{errorMsg}</AlertDescription>
+        </Alert>
+      )}
     </form>
   );
 }
