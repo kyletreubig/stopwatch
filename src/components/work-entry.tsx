@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { updateWorkEntry } from "@/api/update-work-entry";
 import { type WorkEntry as WorkEntryType } from "@/db";
 import { cn } from "@/lib/utils";
 import { calcDuration } from "@/utils/calc-duration";
@@ -33,6 +34,9 @@ export function WorkEntry({ entry }: { entry: WorkEntryType }) {
     }
   }, [entry]);
 
+  const handleProjectChange = (project: string) =>
+    updateWorkEntry(entry.id, { project });
+
   return (
     <div className="grid grid-cols-[1fr_auto_1fr_1fr_1fr_auto] gap-2 items-center">
       <Input
@@ -55,6 +59,7 @@ export function WorkEntry({ entry }: { entry: WorkEntryType }) {
       />
       <ProjectSelect
         className={cn({ "border-green-600 bg-green-50": isActive })}
+        onValueChange={handleProjectChange}
         value={entry.project}
       />
       {entry.endTime ? (
