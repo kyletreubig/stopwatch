@@ -1,3 +1,5 @@
+import { useProjects } from "@/api/get-projects";
+
 import {
   Select,
   SelectContent,
@@ -7,14 +9,18 @@ import {
 } from "./ui/select";
 
 export function ProjectSelect() {
+  const projects = useProjects();
   return (
     <Select>
       <SelectTrigger className="w-full">
         <SelectValue placeholder="Select project" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="1">Project 1</SelectItem>
-        <SelectItem value="2">Project 2</SelectItem>
+        {projects?.map((project) => (
+          <SelectItem key={project.id} value={project.name}>
+            {project.name}
+          </SelectItem>
+        ))}
       </SelectContent>
     </Select>
   );

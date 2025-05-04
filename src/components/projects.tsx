@@ -1,6 +1,11 @@
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 
+import { addProject } from "@/api/add-project";
+import { useProjects } from "@/api/get-projects";
+import { Project } from "@/db";
+
+import { DeleteProjectButton } from "./delete-project-button";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import {
@@ -11,66 +16,59 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
-import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 
-type Show = "active" | "archived";
+type Inputs = Omit<Project, "id">;
 
 export function Projects() {
-  const [show, setShow] = useState<Show>("active");
+  const projects = useProjects();
+
+  const form = useForm<Inputs>({
+    defaultValues: { name: "" },
+  });
+
+  const onSubmit = ({ name }: Inputs) => addProject(name);
 
   return (
-    <Tabs
-      className="p-4 border rounded shadow"
-      onValueChange={(v) => setShow(v as Show)}
-      value={show}
-    >
-      <h2 className="flex justify-between">
-        Projects
-        <TabsList>
-          <TabsTrigger value="active">Active</TabsTrigger>
-          <TabsTrigger value="archived">Archived</TabsTrigger>
-        </TabsList>
-      </h2>
+    <div className="p-4 border rounded shadow">
+      <h2>Projects </h2>
 
-      <Table className="table-auto">
-        <TableHeader>
-          <TableRow>
-            <TableHead>Project</TableHead>
-            <TableHead className="w-32" />
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell>Project 1</TableCell>
-            <TableCell>
-              <Button className="w-full" variant="outline">
-                {show == "active" ? "Archive" : "Unarchive"}
-              </Button>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Project 2</TableCell>
-            <TableCell>
-              <Button className="w-full" variant="outline">
-                {show == "active" ? "Archive" : "Unarchive"}
-              </Button>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>
-              <Input
-                disabled={show == "archived"}
-                placeholder="New project name"
-              />
-            </TableCell>
-            <TableCell>
-              <Button className="w-full" disabled={show == "archived"}>
-                <Plus /> Add
-              </Button>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </Tabs>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <Table className="table-auto">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Project</TableHead>
+              <TableHead className="w-32" />
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {projects?.map((project) => (
+              <TableRow key={project.id}>
+                <TableCell>{project.name}</TableCell>
+                <TableCell>
+                  <DeleteProjectButton project={project} />
+                </TableCell>
+              </TableRow>
+            ))}
+            <TableRow>
+              <TableCell>
+                <Input
+                  placeholder="New project name"
+                  {...form.register("name", { required: true })}
+                />
+              </TableCell>
+              <TableCell>
+                <Button
+                  className="w-full"
+                  disabled={!form.formState.isDirty || !form.formState.isValid}
+                  type="submit"
+                >
+                  <Plus /> Add
+                </Button>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </form>
+    </div>
   );
 }
