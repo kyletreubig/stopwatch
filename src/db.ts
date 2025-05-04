@@ -10,7 +10,7 @@ export interface WorkEntry {
   project: string;
   startTime: Date;
   endTime: Date | null;
-  note: string;
+  note?: string;
 }
 
 export const db = new Dexie("StopwatchDB") as Dexie & {
