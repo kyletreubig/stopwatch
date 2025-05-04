@@ -1,3 +1,5 @@
+import { type SelectProps } from "@radix-ui/react-select";
+
 import { useProjects } from "@/api/get-projects";
 
 import {
@@ -8,10 +10,10 @@ import {
   SelectValue,
 } from "./ui/select";
 
-export function ProjectSelect() {
+export function ProjectSelect(props: SelectProps) {
   const projects = useProjects();
   return (
-    <Select>
+    <Select {...props}>
       <SelectTrigger className="w-full">
         <SelectValue placeholder="Select project" />
       </SelectTrigger>
