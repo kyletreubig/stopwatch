@@ -7,6 +7,7 @@ import {
   Select,
   SelectContent,
   SelectItem,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
@@ -23,6 +24,8 @@ export function ProjectSelect({ className, ...props }: Props) {
         <SelectValue placeholder="Select project" />
       </SelectTrigger>
       <SelectContent>
+        <SelectItem value="__break">break</SelectItem>
+        <SelectSeparator />
         {projects?.map((project) => (
           <SelectItem key={project.id} value={project.name}>
             {project.name}

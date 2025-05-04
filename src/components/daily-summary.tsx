@@ -19,7 +19,7 @@ function summarize(entries?: WorkEntry[]) {
   const byProject = new Map<string, number>();
   let total = 0;
   entries?.forEach((entry) => {
-    if (entry.endTime) {
+    if (entry.endTime && entry.project != "__break") {
       const duration = calcDuration(entry.startTime, entry.endTime);
       const prev = byProject.get(entry.project) || 0;
       byProject.set(entry.project, prev + duration);
