@@ -11,7 +11,7 @@ export function validateWorkEntry(
   const lastEntry = entries?.at(-1);
 
   if (endTime == null) {
-    if (lastEntry && lastEntry.endTime != startTime) {
+    if (lastEntry?.endTime && !isEqual(lastEntry.endTime, startTime)) {
       return "A timer entry must start at the end of the last work entry.";
     }
   } else {

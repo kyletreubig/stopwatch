@@ -27,6 +27,9 @@ export function WorkEntry({ entry }: { entry: WorkEntryType }) {
       updateEndTime();
       const reg = setInterval(updateEndTime, 1000 * 60); // Every minute
       return () => clearInterval(reg);
+    } else {
+      setEndTime(entry.endTime);
+      setDuration(calcDuration(entry.startTime, entry.endTime));
     }
   }, [entry]);
 
@@ -54,7 +57,11 @@ export function WorkEntry({ entry }: { entry: WorkEntryType }) {
         className={cn({ "border-green-600 bg-green-50": isActive })}
         value={entry.project}
       />
-      {entry.endTime ? <WorkEntryActions /> : <ActiveWorkEntryActions />}
+      {entry.endTime ? (
+        <WorkEntryActions />
+      ) : (
+        <ActiveWorkEntryActions entry={entry} />
+      )}
     </div>
   );
 }
