@@ -72,7 +72,11 @@ export function AddWorkEntry({
             />
           )}
         />
-        <Input disabled placeholder="Hours" value={duration} />
+        <Input
+          disabled
+          placeholder="Hours"
+          value={`${duration.toFixed(1)} hours`}
+        />
         <Controller
           name="project"
           control={form.control}

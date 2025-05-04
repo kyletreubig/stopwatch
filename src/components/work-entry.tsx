@@ -48,7 +48,7 @@ export function WorkEntry({ entry }: { entry: WorkEntryType }) {
       <Input
         className={cn({ "border-green-600 bg-green-50": isActive })}
         disabled
-        value={duration}
+        value={`${duration.toFixed(1)} hours`}
       />
       <ProjectSelect
         className={cn({ "border-green-600 bg-green-50": isActive })}

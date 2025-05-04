@@ -12,7 +12,7 @@ import {
 } from "./ui/select";
 
 type Props = SelectProps & {
-  className: SelectTriggerProps["className"];
+  className?: SelectTriggerProps["className"];
 };
 
 export function ProjectSelect({ className, ...props }: Props) {
