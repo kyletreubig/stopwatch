@@ -24,7 +24,6 @@ export function AddWorkEntry({
   entries?: WorkEntry[];
 }) {
   const lastEntry = useMemo(() => entries?.at(-1), [entries]);
-  const disabled = lastEntry && lastEntry.endTime == null;
 
   const form = useForm<Inputs>({
     defaultValues: {
@@ -55,7 +54,6 @@ export function AddWorkEntry({
           control={form.control}
           render={({ field }) => (
             <Input
-              disabled={disabled}
               onChange={(e) => field.onChange(parseTime(date, e.target.value))}
               type="time"
               value={formatTime(field.value)}
@@ -68,7 +66,6 @@ export function AddWorkEntry({
           control={form.control}
           render={({ field }) => (
             <Input
-              disabled={disabled}
               onChange={(e) => field.onChange(parseTime(date, e.target.value))}
               type="time"
               value={field.value ? formatTime(field.value) : ""}
@@ -81,16 +78,11 @@ export function AddWorkEntry({
           control={form.control}
           rules={{ required: true }}
           render={({ field }) => (
-            <ProjectSelect
-              disabled={disabled}
-              onValueChange={field.onChange}
-              value={field.value}
-            />
+            <ProjectSelect onValueChange={field.onChange} value={field.value} />
           )}
         />
         <Button
           disabled={
-            disabled ||
             !form.formState.isDirty ||
             !form.formState.isValid ||
             Boolean(errorMsg)
