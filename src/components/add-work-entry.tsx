@@ -1,4 +1,5 @@
-import { Plus } from "lucide-react";
+import { Play, Plus } from "lucide-react";
+import { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { addWorkEntry } from "@/api/add-work-entry";
@@ -13,10 +14,19 @@ import { Input } from "./ui/input";
 
 type Inputs = Omit<WorkEntry, "id">;
 
-export function AddWorkEntry({ date }: { date: Date }) {
+export function AddWorkEntry({
+  date,
+  entries,
+}: {
+  date: Date;
+  entries?: WorkEntry[];
+}) {
+  const lastEntry = useMemo(() => entries?.at(-1), [entries]);
+  const disabled = lastEntry && lastEntry.endTime == null;
+
   const form = useForm<Inputs>({
     defaultValues: {
-      startTime: new Date(),
+      startTime: lastEntry?.endTime || new Date(),
       endTime: null,
       project: "",
     },
@@ -35,6 +45,7 @@ export function AddWorkEntry({ date }: { date: Date }) {
           control={form.control}
           render={({ field }) => (
             <Input
+              disabled={disabled}
               onChange={(e) => field.onChange(parseTime(date, e.target.value))}
               type="time"
               value={formatTime(field.value)}
@@ -47,6 +58,7 @@ export function AddWorkEntry({ date }: { date: Date }) {
           control={form.control}
           render={({ field }) => (
             <Input
+              disabled={disabled}
               onChange={(e) => field.onChange(parseTime(date, e.target.value))}
               type="time"
               value={field.value ? formatTime(field.value) : ""}
@@ -57,12 +69,30 @@ export function AddWorkEntry({ date }: { date: Date }) {
         <Controller
           name="project"
           control={form.control}
+          rules={{ required: true }}
           render={({ field }) => (
-            <ProjectSelect onValueChange={field.onChange} value={field.value} />
+            <ProjectSelect
+              disabled={disabled}
+              onValueChange={field.onChange}
+              value={field.value}
+            />
           )}
         />
-        <Button disabled={!form.formState.isValid} type="submit">
-          <Plus /> Add
+        <Button
+          disabled={
+            disabled || !form.formState.isDirty || !form.formState.isValid
+          }
+          type="submit"
+        >
+          {endTime ? (
+            <>
+              <Plus /> Add
+            </>
+          ) : (
+            <>
+              <Play /> Start
+            </>
+          )}
         </Button>
       </div>
     </form>

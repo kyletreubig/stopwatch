@@ -12,9 +12,10 @@ export function WorkEntry({ entry }: { entry: WorkEntryType }) {
     : 0;
   return (
     <div className="grid grid-cols-[1fr_auto_1fr_1fr_1fr_auto] gap-2 items-center">
-      <Input type="time" value={formatTime(entry.startTime)} />
+      <Input disabled type="time" value={formatTime(entry.startTime)} />
       to
       <Input
+        disabled
         type="time"
         value={entry.endTime ? formatTime(entry.endTime) : ""}
       />
