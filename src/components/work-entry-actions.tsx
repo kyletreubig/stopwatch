@@ -29,7 +29,13 @@ export function WorkEntryActions({
   return (
     <Dialog onOpenChange={() => setAction(null)} open={Boolean(action)}>
       <WorkEntryActionsDropdownMenu onSelect={setAction} />
-      {action && <ActionComponent entry={entry} entries={entries} />}
+      {action && (
+        <ActionComponent
+          entry={entry}
+          entries={entries}
+          onClose={() => setAction(null)}
+        />
+      )}
     </Dialog>
   );
 }

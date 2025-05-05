@@ -12,6 +12,7 @@ export type WorkEntryActionTypes =
 export type WorkEntryActionProps = {
   entry: WorkEntry;
   entries?: WorkEntry[];
+  onClose: () => void;
 };
 
 export type WorkEntryActionComponent = React.FC<WorkEntryActionProps>;
