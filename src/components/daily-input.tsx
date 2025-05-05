@@ -9,7 +9,9 @@ export function DailyInput() {
   const workEntries = useWorkEntries(selectedDate);
   return (
     <div className="flex flex-col gap-2">
-      {workEntries?.map((entry) => <WorkEntry key={entry.id} entry={entry} />)}
+      {workEntries?.map((entry) => (
+        <WorkEntry key={entry.id} entry={entry} entries={workEntries} />
+      ))}
       <AddWorkEntry
         key={JSON.stringify({ selectedDate, workEntries })}
         date={selectedDate}

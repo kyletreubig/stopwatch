@@ -11,7 +11,13 @@ import { ProjectSelect } from "./project-select";
 import { Input } from "./ui/input";
 import { WorkEntryActions } from "./work-entry-actions";
 
-export function WorkEntry({ entry }: { entry: WorkEntryType }) {
+export function WorkEntry({
+  entry,
+  entries,
+}: {
+  entry: WorkEntryType;
+  entries?: WorkEntryType[];
+}) {
   const isActive = entry.endTime == null;
   const [endTime, setEndTime] = useState(entry.endTime);
   const [duration, setDuration] = useState(() =>
@@ -63,7 +69,7 @@ export function WorkEntry({ entry }: { entry: WorkEntryType }) {
         value={entry.project}
       />
       {entry.endTime ? (
-        <WorkEntryActions />
+        <WorkEntryActions entry={entry} entries={entries} />
       ) : (
         <ActiveWorkEntryActions entry={entry} />
       )}
