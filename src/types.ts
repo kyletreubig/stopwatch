@@ -16,3 +16,9 @@ export type WorkEntryActionProps = {
 };
 
 export type WorkEntryActionComponent = React.FC<WorkEntryActionProps>;
+
+export type WorkEntryChange = {
+  id: number;
+  updates?: Partial<Omit<WorkEntry, "id">>;
+  delete?: boolean;
+};
