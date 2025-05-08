@@ -1,11 +1,14 @@
-import { MoveVertical } from "lucide-react";
+import { AlertCircle, MoveVertical } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { updateWorkEntry } from "@/api/update-work-entry";
 import { WorkEntryActionProps } from "@/types";
+import { applyWorkEntryChanges } from "@/utils/apply-work-entry-changes";
 import { formatTime } from "@/utils/format-time";
 import { parseTime } from "@/utils/parse-time";
+import { shiftEntries, shiftEntry } from "@/utils/shift-work-entry";
 
+import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { Button } from "./ui/button";
 import {
   DialogContent,
@@ -43,26 +46,22 @@ export function ShiftWorkEntryDialogContent({
     },
   });
 
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const onSubmit = ({ newStartTime, shiftAdjacent }: Inputs) => {
     if (!entries) return; // Impossible to happen at this point
 
     const shiftAmount = newStartTime.getTime() - entry.startTime.getTime();
     if (shiftAdjacent) {
-      for (const neighbor of entries) {
-        const startTime = new Date(neighbor.startTime.getTime() + shiftAmount);
-        const endTime = neighbor.endTime
-          ? new Date(neighbor.endTime.getTime() + shiftAmount)
-          : null;
-        updateWorkEntry(neighbor.id, { startTime, endTime });
-      }
-      // } else {
-      //   const newEndTime = entry.endTime ? new Date(entry.endTime.getTime() + shiftAmount) : null;
-      //   for (const neighbor of entries) {
-      //     if (shiftAmount < 0 && neighbor.startTime > newStartTime) {
-      //   }
+      shiftEntries(entries, shiftAmount)
+        .then(applyWorkEntryChanges)
+        .then(onClose)
+        .catch(setErrorMsg);
+    } else {
+      shiftEntry(entry, entries, shiftAmount)
+        .then(applyWorkEntryChanges)
+        .then(onClose)
+        .catch(setErrorMsg);
     }
-
-    onClose();
   };
 
   return (
@@ -121,6 +120,13 @@ export function ShiftWorkEntryDialogContent({
           />
         </form>
       </Form>
+      {errorMsg && (
+        <Alert variant="destructive">
+          <AlertCircle className="size-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{errorMsg}</AlertDescription>
+        </Alert>
+      )}
       <DialogFooter>
         <Button
           disabled={!form.formState.isDirty || !form.formState.isValid}
