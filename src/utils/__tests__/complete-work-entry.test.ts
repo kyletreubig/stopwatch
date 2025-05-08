@@ -4,8 +4,7 @@ import { WorkEntry } from "@/db";
 
 import { completeWorkEntry } from "../complete-work-entry";
 
-const time = (hours: number, minutes: number) =>
-  new Date(2025, 5, 5, hours, minutes, 0, 0);
+import { time } from "./helpers.test";
 
 describe("completeWorkEntry", () => {
   const entries: WorkEntry[] = [

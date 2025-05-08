@@ -4,8 +4,7 @@ import { WorkEntry } from "@/db";
 
 import { shiftEntries, shiftEntry } from "../shift-work-entry";
 
-const time = (hours: number, minutes: number) =>
-  new Date(2025, 5, 5, hours, minutes, 0, 0);
+import { time } from "./helpers.test";
 
 describe("shiftEntries", () => {
   const entries: WorkEntry[] = [

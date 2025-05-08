@@ -1,13 +1,18 @@
+import { addWorkEntry } from "@/api/add-work-entry";
+import { deleteWorkEntry } from "@/api/delete-work-entry";
+import { updateWorkEntry } from "@/api/update-work-entry";
 import { db } from "@/db";
 import { WorkEntryChange } from "@/types";
 
 export function applyWorkEntryChanges(changes: WorkEntryChange[]) {
   db.transaction("rw", db.workEntries, () => {
     for (const change of changes) {
-      if (change.updates) {
-        db.workEntries.update(change.id, change.updates);
+      if (change.values) {
+        addWorkEntry(change.values);
+      } else if (change.updates) {
+        updateWorkEntry(change.id, change.updates);
       } else if (change.delete) {
-        db.workEntries.delete(change.id);
+        deleteWorkEntry(change.id);
       }
     }
   });
