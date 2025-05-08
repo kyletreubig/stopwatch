@@ -7,14 +7,15 @@ import { ShiftWorkEntryDialogContent } from "./shift-work-entry-dialog-content";
 import { Dialog } from "./ui/dialog";
 import { WorkEntryActionsDropdownMenu } from "./work-entry-actions-dropdown-menu";
 
-const ActionComponents: Record<WorkEntryActionTypes, WorkEntryActionComponent> =
-  {
-    shrink: ShiftWorkEntryDialogContent,
-    grow: ShiftWorkEntryDialogContent,
-    shift: ShiftWorkEntryDialogContent,
-    split: ShiftWorkEntryDialogContent,
-    interject: ShiftWorkEntryDialogContent,
-  };
+const ActionComponents: Partial<
+  Record<WorkEntryActionTypes, WorkEntryActionComponent>
+> = {
+  // shrink: ShiftWorkEntryDialogContent,
+  // grow: ShiftWorkEntryDialogContent,
+  shift: ShiftWorkEntryDialogContent,
+  // split: ShiftWorkEntryDialogContent,
+  // interject: ShiftWorkEntryDialogContent,
+};
 
 export function WorkEntryActions({
   entry,
@@ -24,12 +25,12 @@ export function WorkEntryActions({
   entries?: WorkEntry[];
 }) {
   const [action, setAction] = useState<WorkEntryActionTypes | null>(null);
-  const ActionComponent = ActionComponents[action || "grow"];
+  const ActionComponent = ActionComponents[action as WorkEntryActionTypes];
 
   return (
     <Dialog onOpenChange={() => setAction(null)} open={Boolean(action)}>
       <WorkEntryActionsDropdownMenu onSelect={setAction} />
-      {action && (
+      {ActionComponent && (
         <ActionComponent
           entry={entry}
           entries={entries}

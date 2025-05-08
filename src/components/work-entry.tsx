@@ -71,7 +71,7 @@ export function WorkEntry({
       {entry.endTime ? (
         <WorkEntryActions entry={entry} entries={entries} />
       ) : (
-        <ActiveWorkEntryActions entry={entry} />
+        <ActiveWorkEntryActions entry={entry} entries={entries} />
       )}
     </div>
   );

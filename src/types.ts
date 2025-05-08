@@ -7,7 +7,8 @@ export type WorkEntryActionTypes =
   | "grow"
   | "shift"
   | "split"
-  | "interject";
+  | "interject"
+  | "complete";
 
 export type WorkEntryActionProps = {
   entry: WorkEntry;

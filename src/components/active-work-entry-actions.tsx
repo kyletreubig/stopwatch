@@ -1,44 +1,38 @@
-import { Check, Ellipsis, X } from "lucide-react";
+import { useState } from "react";
 
-import { deleteWorkEntry } from "@/api/delete-work-entry";
-import { updateWorkEntry } from "@/api/update-work-entry";
 import type { WorkEntry } from "@/db";
-import { clearSeconds } from "@/utils/clear-seconds";
+import { WorkEntryActionComponent, WorkEntryActionTypes } from "@/types";
 
-import { Button } from "./ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+import { ActiveWorkEntryActionsDropdownMenu } from "./active-work-entry-actions-dropdown-menu";
+import { CompleteWorkEntryDialogContent } from "./complete-work-entry-dialog-content";
+import { Dialog } from "./ui/dialog";
 
-export function ActiveWorkEntryActions({ entry }: { entry: WorkEntry }) {
-  const handleComplete = () =>
-    updateWorkEntry(entry.id, { endTime: clearSeconds(new Date()) });
+const ActionComponents: Partial<
+  Record<WorkEntryActionTypes, WorkEntryActionComponent>
+> = {
+  complete: CompleteWorkEntryDialogContent,
+};
 
-  const handleCancel = () => deleteWorkEntry(entry.id);
+export function ActiveWorkEntryActions({
+  entry,
+  entries,
+}: {
+  entry: WorkEntry;
+  entries?: WorkEntry[];
+}) {
+  const [action, setAction] = useState<WorkEntryActionTypes | null>(null);
+  const ActionComponent = ActionComponents[action as WorkEntryActionTypes];
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Ellipsis />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleComplete}>
-          <Check /> Complete
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleCancel}>
-          <X /> Cancel
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Dialog onOpenChange={() => setAction(null)} open={Boolean(action)}>
+      <ActiveWorkEntryActionsDropdownMenu entry={entry} onSelect={setAction} />
+      {ActionComponent && (
+        <ActionComponent
+          entry={entry}
+          entries={entries}
+          onClose={() => setAction(null)}
+        />
+      )}
+    </Dialog>
   );
 }
