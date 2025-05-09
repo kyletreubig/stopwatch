@@ -3,6 +3,7 @@ import { useState } from "react";
 import { WorkEntry } from "@/db";
 import { WorkEntryActionComponent, WorkEntryActionTypes } from "@/types";
 
+import { InterjectWorkEntryDialogContent } from "./interject-work-entry-dialog-content";
 import { ShiftWorkEntryDialogContent } from "./shift-work-entry-dialog-content";
 import { Dialog } from "./ui/dialog";
 import { WorkEntryActionsDropdownMenu } from "./work-entry-actions-dropdown-menu";
@@ -14,7 +15,7 @@ const ActionComponents: Partial<
   // grow: ShiftWorkEntryDialogContent,
   shift: ShiftWorkEntryDialogContent,
   // split: ShiftWorkEntryDialogContent,
-  // interject: ShiftWorkEntryDialogContent,
+  interject: InterjectWorkEntryDialogContent,
 };
 
 export function WorkEntryActions({
