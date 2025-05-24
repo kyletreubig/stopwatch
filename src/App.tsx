@@ -10,7 +10,10 @@ function App() {
       defaultValue="daily"
     >
       <div className="flex justify-between items-end">
-        <h1 className="mt-2">Stopwatch</h1>
+        <h1 className="mt-2 flex items-center gap-2">
+          <img className="h-12" src="/stopwatch/stopwatch.svg" />
+          Stopwatch
+        </h1>
         <TabsList>
           <TabsTrigger value="daily">Daily</TabsTrigger>
           <TabsTrigger value="projects">Projects</TabsTrigger>
