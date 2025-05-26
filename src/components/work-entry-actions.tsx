@@ -5,6 +5,7 @@ import { WorkEntryActionComponent, WorkEntryActionTypes } from "@/types";
 
 import { InterjectWorkEntryDialogContent } from "./interject-work-entry-dialog-content";
 import { ShiftWorkEntryDialogContent } from "./shift-work-entry-dialog-content";
+import { SplitWorkEntryDialogContent } from "./split-work-entry-dialog-contents";
 import { Dialog } from "./ui/dialog";
 import { WorkEntryActionsDropdownMenu } from "./work-entry-actions-dropdown-menu";
 
@@ -14,7 +15,7 @@ const ActionComponents: Partial<
   // shrink: ShiftWorkEntryDialogContent,
   // grow: ShiftWorkEntryDialogContent,
   shift: ShiftWorkEntryDialogContent,
-  // split: ShiftWorkEntryDialogContent,
+  split: SplitWorkEntryDialogContent,
   interject: InterjectWorkEntryDialogContent,
 };
 
