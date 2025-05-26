@@ -4,6 +4,7 @@ import { WorkEntry } from "@/db";
 import { WorkEntryActionComponent, WorkEntryActionTypes } from "@/types";
 
 import { InterjectWorkEntryDialogContent } from "./interject-work-entry-dialog-content";
+import { MergeWorkEntryDialogContent } from "./merge-work-entry-dialog-contents";
 import { ResizeWorkEntryDialogContent } from "./resize-work-entry-dialog-content";
 import { ShiftWorkEntryDialogContent } from "./shift-work-entry-dialog-content";
 import { SplitWorkEntryDialogContent } from "./split-work-entry-dialog-contents";
@@ -17,6 +18,7 @@ const ActionComponents: Partial<
   resize: ResizeWorkEntryDialogContent,
   split: SplitWorkEntryDialogContent,
   interject: InterjectWorkEntryDialogContent,
+  merge: MergeWorkEntryDialogContent,
 };
 
 export function WorkEntryActions({

@@ -7,6 +7,7 @@ export type WorkEntryActionTypes =
   | "resize"
   | "split"
   | "interject"
+  | "merge"
   | "complete";
 
 export type WorkEntryActionProps = {

@@ -5,6 +5,7 @@ import {
   BetweenHorizonalStart,
   ArrowDownToLine,
   X,
+  Merge,
 } from "lucide-react";
 
 import { deleteWorkEntry } from "@/api/delete-work-entry";
@@ -62,13 +63,14 @@ export function WorkEntryActionsDropdownMenu({
           <BetweenHorizonalStart /> Interject
         </DropdownMenuItem>
 
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={() => onSelect("merge")}>
+          <Merge /> Merge
+        </DropdownMenuItem>
         {canDelete && (
-          <>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleDelete}>
-              <X /> Delete
-            </DropdownMenuItem>
-          </>
+          <DropdownMenuItem onClick={handleDelete}>
+            <X /> Delete
+          </DropdownMenuItem>
         )}
       </DropdownMenuContent>
     </DropdownMenu>
