@@ -6,7 +6,7 @@ import { WorkEntryActionProps } from "@/types";
 import { applyWorkEntryChanges } from "@/utils/apply-work-entry-changes";
 import { formatTime } from "@/utils/format-time";
 import { parseTime } from "@/utils/parse-time";
-import { resizeWorkEntry } from "@/utils/resize-work-entry";
+import { resizeWorkEntry } from "@/utils/work-entry-actions";
 
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { Button } from "./ui/button";

@@ -6,9 +6,9 @@ import { WorkEntryActionProps } from "@/types";
 import { applyWorkEntryChanges } from "@/utils/apply-work-entry-changes";
 import { calcDuration } from "@/utils/calc-duration";
 import { clearSeconds } from "@/utils/clear-seconds";
-import { completeWorkEntry } from "@/utils/complete-work-entry";
 import { formatTime } from "@/utils/format-time";
 import { parseTime } from "@/utils/parse-time";
+import { completeWorkEntry } from "@/utils/work-entry-actions";
 
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { Button } from "./ui/button";

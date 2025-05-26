@@ -7,8 +7,8 @@ import { WorkEntryActionProps } from "@/types";
 import { applyWorkEntryChanges } from "@/utils/apply-work-entry-changes";
 import { calcDuration } from "@/utils/calc-duration";
 import { formatTime } from "@/utils/format-time";
-import { interjectWorkEntry } from "@/utils/interject-work-entry";
 import { parseTime } from "@/utils/parse-time";
+import { interjectWorkEntry } from "@/utils/work-entry-actions";
 
 import { ProjectSelect } from "./project-select";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";

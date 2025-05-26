@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 
 import { WorkEntry } from "@/db";
 
-import { shiftEntries, shiftEntry } from "../shift-work-entry";
+import { shiftEntries, shiftEntry } from "../work-entry-actions";
 
 import { time } from "./helpers.test";
 
