@@ -4,8 +4,11 @@ import {
   SquareSplitVertical,
   BetweenHorizonalStart,
   ArrowDownToLine,
+  X,
 } from "lucide-react";
 
+import { deleteWorkEntry } from "@/api/delete-work-entry";
+import { WorkEntry } from "@/db";
 import { WorkEntryActionTypes } from "@/types";
 
 import { Button } from "./ui/button";
@@ -19,10 +22,20 @@ import {
 } from "./ui/dropdown-menu";
 
 export function WorkEntryActionsDropdownMenu({
+  canDelete,
+  entry,
   onSelect,
 }: {
+  canDelete?: boolean;
+  entry: WorkEntry;
   onSelect: (action: WorkEntryActionTypes) => void;
 }) {
+  const handleDelete = () => {
+    if (canDelete) {
+      deleteWorkEntry(entry.id);
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -48,6 +61,15 @@ export function WorkEntryActionsDropdownMenu({
         <DropdownMenuItem onClick={() => onSelect("interject")}>
           <BetweenHorizonalStart /> Interject
         </DropdownMenuItem>
+
+        {canDelete && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleDelete}>
+              <X /> Delete
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

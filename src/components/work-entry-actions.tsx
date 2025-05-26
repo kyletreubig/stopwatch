@@ -28,10 +28,16 @@ export function WorkEntryActions({
 }) {
   const [action, setAction] = useState<WorkEntryActionTypes | null>(null);
   const ActionComponent = ActionComponents[action as WorkEntryActionTypes];
+  const isFirst = entries?.at(0)?.id === entry.id;
+  const isLast = entries?.at(-1)?.id === entry.id;
 
   return (
     <Dialog onOpenChange={() => setAction(null)} open={Boolean(action)}>
-      <WorkEntryActionsDropdownMenu onSelect={setAction} />
+      <WorkEntryActionsDropdownMenu
+        canDelete={isFirst || isLast}
+        entry={entry}
+        onSelect={setAction}
+      />
       {ActionComponent && (
         <ActionComponent
           entry={entry}
