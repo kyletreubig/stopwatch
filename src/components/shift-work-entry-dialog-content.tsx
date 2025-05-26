@@ -128,11 +128,7 @@ export function ShiftWorkEntryDialogContent({
         </Alert>
       )}
       <DialogFooter>
-        <Button
-          disabled={!form.formState.isDirty || !form.formState.isValid}
-          form="shift-work-entry-form"
-          type="submit"
-        >
+        <Button form="shift-work-entry-form" type="submit">
           <MoveVertical /> Shift
         </Button>
       </DialogFooter>

@@ -86,11 +86,7 @@ export function CompleteWorkEntryDialogContent({
         </Alert>
       )}
       <DialogFooter>
-        <Button
-          disabled={!form.formState.isDirty || !form.formState.isValid}
-          form="complete-work-entry-form"
-          type="submit"
-        >
+        <Button form="complete-work-entry-form" type="submit">
           <Clock /> Complete
         </Button>
       </DialogFooter>
