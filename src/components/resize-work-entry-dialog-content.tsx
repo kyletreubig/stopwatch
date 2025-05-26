@@ -1,4 +1,4 @@
-import { AlertCircle, SquareSplitVertical } from "lucide-react";
+import { AlertCircle, ArrowDownToLine } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -6,7 +6,7 @@ import { WorkEntryActionProps } from "@/types";
 import { applyWorkEntryChanges } from "@/utils/apply-work-entry-changes";
 import { formatTime } from "@/utils/format-time";
 import { parseTime } from "@/utils/parse-time";
-import { splitWorkEntry } from "@/utils/split-work-entry";
+import { resizeWorkEntry } from "@/utils/resize-work-entry";
 
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { Button } from "./ui/button";
@@ -25,24 +25,29 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
+import { Input } from "./ui/input";
 
 type Inputs = {
-  splitAt: Date;
+  newEndTime: Date;
 };
 
-export function SplitWorkEntryDialogContent({
+export function ResizeWorkEntryDialogContent({
   entry,
+  entries,
   onClose,
 }: WorkEntryActionProps) {
   const form = useForm<Inputs>({
     defaultValues: {
-      splitAt: entry.startTime,
+      newEndTime: entry.endTime || new Date(),
     },
   });
 
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const onSubmit = (inputs: Inputs) => {
-    splitWorkEntry(entry, inputs.splitAt)
+  const onSubmit = ({ newEndTime }: Inputs) => {
+    if (!entries) return; // Impossible to happen at this point
+
+    const resizeAmount = newEndTime.getTime() - entry.endTime!.getTime();
+    resizeWorkEntry(entry, entries, resizeAmount)
       .then(applyWorkEntryChanges)
       .then(onClose)
       .catch(setErrorMsg);
@@ -51,25 +56,29 @@ export function SplitWorkEntryDialogContent({
   return (
     <DialogContent>
       <DialogHeader>
-        <DialogTitle>Split Work Entry</DialogTitle>
+        <DialogTitle>Resize Entry</DialogTitle>
         <DialogDescription>
-          Split an entry into two at the specified time.
+          Adjust the end time of this work entry, adjusting the adjacent entries
+          as needed.
         </DialogDescription>
       </DialogHeader>
       <Form {...form}>
-        <form id="split-work-entry-form" onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          id="resize-work-entry-form"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <FormField
             control={form.control}
-            name="splitAt"
+            name="newEndTime"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Split At</FormLabel>
+                <FormLabel>New End Time</FormLabel>
                 <FormControl>
-                  <input
-                    type="time"
+                  <Input
                     onChange={(e) =>
                       field.onChange(parseTime(entry.startTime, e.target.value))
                     }
+                    type="time"
                     value={formatTime(field.value)}
                   />
                 </FormControl>
@@ -87,8 +96,8 @@ export function SplitWorkEntryDialogContent({
         </Alert>
       )}
       <DialogFooter>
-        <Button form="split-work-entry-form" type="submit">
-          <SquareSplitVertical /> Split
+        <Button form="resize-work-entry-form" type="submit">
+          <ArrowDownToLine /> Resize
         </Button>
       </DialogFooter>
     </DialogContent>

@@ -1,10 +1,9 @@
 import {
   Ellipsis,
-  ChevronsDownUp,
-  ChevronsUpDown,
   MoveVertical,
   SquareSplitVertical,
   BetweenHorizonalStart,
+  ArrowDownToLine,
 } from "lucide-react";
 
 import { WorkEntryActionTypes } from "@/types";
@@ -35,14 +34,11 @@ export function WorkEntryActionsDropdownMenu({
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => onSelect("shrink")}>
-          <ChevronsDownUp /> Shrink
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onSelect("grow")}>
-          <ChevronsUpDown /> Grow
-        </DropdownMenuItem>
         <DropdownMenuItem onClick={() => onSelect("shift")}>
           <MoveVertical /> Shift
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => onSelect("resize")}>
+          <ArrowDownToLine /> Resize
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
