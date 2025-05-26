@@ -1,13 +1,14 @@
 import { AlertCircle, Play, Plus, RefreshCw } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { addWorkEntry } from "@/api/add-work-entry";
 import { type WorkEntry } from "@/db";
+import { applyWorkEntryChanges } from "@/utils/apply-work-entry-changes";
 import { calcDuration } from "@/utils/calc-duration";
+import { clearSeconds } from "@/utils/clear-seconds";
 import { formatTime } from "@/utils/format-time";
 import { parseTime } from "@/utils/parse-time";
-import { validateWorkEntry } from "@/utils/validate-work-entry";
+import { addWorkEntry } from "@/utils/work-entry-actions";
 
 import { ProjectSelect } from "./project-select";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
@@ -33,7 +34,7 @@ export function AddWorkEntry({
     watch,
   } = useForm<Inputs>({
     defaultValues: {
-      startTime: lastEntry?.endTime || new Date(),
+      startTime: lastEntry?.endTime || clearSeconds(new Date()),
       endTime: null,
       project: "",
     },
@@ -42,12 +43,13 @@ export function AddWorkEntry({
   const endTime = watch("endTime");
   const duration = endTime ? calcDuration(startTime, endTime) : 0;
 
-  const errorMsg = useMemo(
-    () => validateWorkEntry(startTime, endTime, entries),
-    [startTime, endTime, entries],
-  );
-
-  const onSubmit = (data: Inputs) => addWorkEntry(data);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const onSubmit = (inputs: Inputs) => {
+    addWorkEntry(inputs, entries || [])
+      .then(applyWorkEntryChanges)
+      // .then(() => reset({ startTime: add(date, { days: 1 }), endTime: null, project: "" }))
+      .catch(setErrorMsg);
+  };
 
   return (
     <form
@@ -91,10 +93,7 @@ export function AddWorkEntry({
             <ProjectSelect onValueChange={field.onChange} value={field.value} />
           )}
         />
-        <Button
-          disabled={!isDirty || !isValid || Boolean(errorMsg)}
-          type="submit"
-        >
+        <Button disabled={!isDirty || !isValid} type="submit">
           {endTime ? (
             <>
               <Plus /> Add

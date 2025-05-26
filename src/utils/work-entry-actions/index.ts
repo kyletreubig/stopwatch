@@ -1,3 +1,4 @@
+export { addWorkEntry } from "./add-work-entry";
 export { completeWorkEntry } from "./complete-work-entry";
 export { interjectWorkEntry } from "./interject-work-entry";
 export { resizeWorkEntry } from "./resize-work-entry";
