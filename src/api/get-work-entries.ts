@@ -5,14 +5,14 @@ import { useMemo } from "react";
 import { db } from "@/db";
 import { clearTime } from "@/utils/clear-time";
 
-export function useWorkEntries(date: Date) {
+export function useWorkEntries(fromDate: Date, toDate?: Date) {
   const [lower, upper] = useMemo(() => {
     // Midnight of the given date
-    const lower = clearTime(new Date(date));
+    const lower = clearTime(new Date(fromDate));
     // Midnight of the next day
-    const upper = addDays(lower, 1);
+    const upper = toDate ? clearTime(new Date(toDate)) : addDays(lower, 1);
     return [lower, upper];
-  }, [date]);
+  }, [fromDate, toDate]);
 
   return useLiveQuery(
     () =>

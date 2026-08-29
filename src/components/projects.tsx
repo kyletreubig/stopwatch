@@ -3,7 +3,11 @@ import { useForm } from "react-hook-form";
 
 import { addProject } from "@/api/add-project";
 import { useProjects } from "@/api/get-projects";
-import { Project } from "@/db";
+import {
+  resetProjectAllocations,
+  updateProjectAllocation,
+} from "@/api/update-project";
+import { sumProjectAllocations } from "@/utils/sum-project-allocations";
 
 import { DeleteProjectButton } from "./delete-project-button";
 import { Button } from "./ui/button";
@@ -17,7 +21,7 @@ import {
   TableRow,
 } from "./ui/table";
 
-type Inputs = Omit<Project, "id">;
+type Inputs = { name: string };
 
 export function Projects() {
   const projects = useProjects();
@@ -27,6 +31,7 @@ export function Projects() {
   });
 
   const onSubmit = ({ name }: Inputs) => addProject(name);
+  const totalAllocation = sumProjectAllocations(projects ?? []);
 
   return (
     <div className="p-4 border rounded shadow">
@@ -37,6 +42,7 @@ export function Projects() {
           <TableHeader>
             <TableRow>
               <TableHead>Project</TableHead>
+              <TableHead className="w-32">Allocation</TableHead>
               <TableHead className="w-32" />
             </TableRow>
           </TableHeader>
@@ -44,6 +50,22 @@ export function Projects() {
             {projects?.map((project) => (
               <TableRow key={project.id}>
                 <TableCell>{project.name}</TableCell>
+                <TableCell>
+                  <Input
+                    className="w-24"
+                    max={100}
+                    min={0}
+                    onChange={(event) => {
+                      const parsed = Number(event.target.value);
+                      void updateProjectAllocation(
+                        project.id,
+                        Number.isFinite(parsed) ? parsed : 0,
+                      );
+                    }}
+                    type="number"
+                    value={project.allocation ?? 0}
+                  />
+                </TableCell>
                 <TableCell>
                   <DeleteProjectButton project={project} />
                 </TableCell>
@@ -56,6 +78,7 @@ export function Projects() {
                   {...form.register("name", { required: true })}
                 />
               </TableCell>
+              <TableCell />
               <TableCell>
                 <Button
                   className="w-full"
@@ -69,6 +92,21 @@ export function Projects() {
           </TableBody>
         </Table>
       </form>
+
+      <div className="mt-4 flex items-center justify-between gap-2">
+        <div className="text-sm">
+          Total allocation: {totalAllocation}%
+          {totalAllocation > 100 && (
+            <span className="ml-2 text-amber-600">Warning: over 100%</span>
+          )}
+        </div>
+        <Button
+          onClick={() => void resetProjectAllocations()}
+          variant="outline"
+        >
+          Reset all allocations
+        </Button>
+      </div>
     </div>
   );
 }

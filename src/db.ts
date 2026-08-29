@@ -3,6 +3,7 @@ import Dexie, { type EntityTable } from "dexie";
 export interface Project {
   id: number;
   name: string;
+  allocation: number;
 }
 
 export interface WorkEntry {
@@ -22,3 +23,19 @@ db.version(1).stores({
   projects: "++id,&name",
   workEntries: "++id,project,startTime,endTime",
 });
+
+db.version(2)
+  .stores({
+    projects: "++id,&name,allocation",
+    workEntries: "++id,project,startTime,endTime",
+  })
+  .upgrade(async (tx) => {
+    const projects = await tx.table("projects").toArray();
+    await Promise.all(
+      projects.map((project) =>
+        tx.table("projects").update(project.id, {
+          allocation: project.allocation ?? 0,
+        }),
+      ),
+    );
+  });

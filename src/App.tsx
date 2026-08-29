@@ -2,6 +2,7 @@ import { Daily } from "./components/daily";
 import { DateSelection } from "./components/date-selection";
 import { Projects } from "./components/projects";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
+import { Weekly } from "./components/weekly";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         </h1>
         <TabsList>
           <TabsTrigger value="daily">Daily</TabsTrigger>
+          <TabsTrigger value="weekly">Weekly</TabsTrigger>
           <TabsTrigger value="projects">Projects</TabsTrigger>
         </TabsList>
       </div>
@@ -23,6 +25,11 @@ function App() {
       <TabsContent className="flex flex-col gap-4" value="daily">
         <DateSelection />
         <Daily />
+      </TabsContent>
+
+      <TabsContent className="flex flex-col gap-4" value="weekly">
+        <DateSelection />
+        <Weekly />
       </TabsContent>
 
       <TabsContent value="projects">
