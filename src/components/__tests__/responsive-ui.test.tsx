@@ -48,12 +48,12 @@ describe("responsive UI contracts", () => {
       name: "Toggle date selection panel",
     });
 
-    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(toggle.getAttribute("aria-expanded")).toBe("false");
     expect(useDateSelectionStore.getState().isMobilePanelCollapsed).toBe(true);
 
     fireEvent.click(toggle);
 
-    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    expect(toggle.getAttribute("aria-expanded")).toBe("true");
     expect(useDateSelectionStore.getState().isMobilePanelCollapsed).toBe(false);
   });
 
@@ -81,11 +81,13 @@ describe("responsive UI contracts", () => {
     );
 
     const deleteText = screen.getByText("Delete");
-    expect(deleteText).toHaveClass("hidden", "sm:inline");
+    expect(deleteText.classList.contains("hidden")).toBe(true);
+    expect(deleteText.classList.contains("sm:inline")).toBe(true);
 
     render(<Projects />);
 
     const addText = screen.getByText("Add");
-    expect(addText).toHaveClass("hidden", "sm:inline");
+    expect(addText.classList.contains("hidden")).toBe(true);
+    expect(addText.classList.contains("sm:inline")).toBe(true);
   });
 });
