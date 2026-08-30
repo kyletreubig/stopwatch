@@ -53,34 +53,41 @@ export function AddWorkEntry({
 
   return (
     <form
-      className="flex flex-col gap-4 mt-4"
+      className="mt-4 flex flex-col gap-3"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="grid grid-cols-[1fr_auto_1fr_1fr_1fr_auto_auto] gap-2 items-center">
-        <Controller
-          name="startTime"
-          control={control}
-          render={({ field }) => (
-            <Input
-              onChange={(e) => field.onChange(parseTime(date, e.target.value))}
-              type="time"
-              value={formatTime(field.value)}
-            />
-          )}
-        />
-        to
-        <Controller
-          name="endTime"
-          control={control}
-          render={({ field }) => (
-            <Input
-              onChange={(e) => field.onChange(parseTime(date, e.target.value))}
-              type="time"
-              value={field.value ? formatTime(field.value) : ""}
-            />
-          )}
-        />
+      <div className="flex flex-col gap-2 rounded-xl border bg-card/70 p-3 shadow-sm sm:grid sm:grid-cols-[1fr_auto_1fr_1fr_1fr_auto_auto] sm:items-center sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none">
+        <div className="grid grid-cols-[1fr_auto_1fr] gap-2 items-center sm:contents">
+          <Controller
+            name="startTime"
+            control={control}
+            render={({ field }) => (
+              <Input
+                onChange={(e) =>
+                  field.onChange(parseTime(date, e.target.value))
+                }
+                type="time"
+                value={formatTime(field.value)}
+              />
+            )}
+          />
+          <span className="text-center text-sm text-muted-foreground">to</span>
+          <Controller
+            name="endTime"
+            control={control}
+            render={({ field }) => (
+              <Input
+                onChange={(e) =>
+                  field.onChange(parseTime(date, e.target.value))
+                }
+                type="time"
+                value={field.value ? formatTime(field.value) : ""}
+              />
+            )}
+          />
+        </div>
         <Input
+          className="text-center"
           disabled
           placeholder="Hours"
           value={`${duration.toFixed(1)} hours`}
@@ -90,28 +97,39 @@ export function AddWorkEntry({
           control={control}
           rules={{ required: true }}
           render={({ field }) => (
-            <ProjectSelect onValueChange={field.onChange} value={field.value} />
+            <ProjectSelect
+              className="h-11 sm:h-9"
+              onValueChange={field.onChange}
+              value={field.value}
+            />
           )}
         />
-        <Button disabled={!isDirty || !isValid} type="submit">
-          {endTime ? (
-            <>
-              <Plus /> Add
-            </>
-          ) : (
-            <>
-              <Play /> Start
-            </>
-          )}
-        </Button>
-        <Button
-          onClick={() => reset()}
-          size="icon"
-          type="reset"
-          variant="outline"
-        >
-          <RefreshCw />
-        </Button>
+        <div className="grid grid-cols-2 gap-2 sm:contents">
+          <Button
+            className="h-11 sm:h-9"
+            disabled={!isDirty || !isValid}
+            type="submit"
+          >
+            {endTime ? (
+              <>
+                <Plus /> Add
+              </>
+            ) : (
+              <>
+                <Play /> Start
+              </>
+            )}
+          </Button>
+          <Button
+            className="h-11 w-full sm:h-9 sm:w-9"
+            onClick={() => reset()}
+            size="icon"
+            type="reset"
+            variant="outline"
+          >
+            <RefreshCw />
+          </Button>
+        </div>
       </div>
       {isDirty && errorMsg && (
         <Alert variant="destructive">

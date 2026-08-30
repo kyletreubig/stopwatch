@@ -1,4 +1,5 @@
 import { addDays, format, subWeeks } from "date-fns";
+import { Minus, Plus } from "lucide-react";
 import { useMemo } from "react";
 
 import { useProjects } from "@/api/get-projects";
@@ -8,6 +9,7 @@ import { useWeeklyViewStore } from "@/stores/weekly-view";
 import { datesOfWeek } from "@/utils/dates-of-week";
 import { summarizeWeeklyProjectAllocations } from "@/utils/summarize-weekly-project-allocations";
 
+import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
@@ -45,12 +47,23 @@ export function Weekly() {
   const rangeLabel = `${format(range.start, "MMM d")} - ${format(range.end, "MMM d")}`;
 
   return (
-    <div className="p-4 flex flex-col gap-2 border rounded shadow">
-      <h2 className="flex justify-between">
-        <span>{rangeLabel}</span>
-        <div className="flex items-center justify-end gap-2">
+    <div className="flex flex-col gap-3 rounded-xl border p-3 shadow sm:gap-2 sm:p-4">
+      <h2 className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <span className="text-2xl font-semibold sm:text-base sm:font-medium">
+          {rangeLabel}
+        </span>
+        <div className="flex items-center justify-start gap-2 sm:justify-end">
+          <Button
+            className="h-11 w-11 sm:h-9 sm:w-9"
+            onClick={() => setWeeksToDisplay(Math.max(weeksToDisplay - 1, 1))}
+            size="icon"
+            type="button"
+            variant="outline"
+          >
+            <Minus />
+          </Button>
           <Input
-            className="w-20"
+            className="h-11 w-16 text-center sm:h-9 sm:w-20"
             id="weeks-to-display"
             max={12}
             min={1}
@@ -63,7 +76,19 @@ export function Weekly() {
             type="number"
             value={weeksToDisplay}
           />
-          <Label className="text-nowrap" htmlFor="weeks-to-display">
+          <Button
+            className="h-11 w-11 sm:h-9 sm:w-9"
+            onClick={() => setWeeksToDisplay(Math.min(weeksToDisplay + 1, 12))}
+            size="icon"
+            type="button"
+            variant="outline"
+          >
+            <Plus />
+          </Button>
+          <Label
+            className="text-sm text-muted-foreground"
+            htmlFor="weeks-to-display"
+          >
             Weeks
           </Label>
         </div>

@@ -44,35 +44,46 @@ export function WorkEntry({
     updateWorkEntry(entry.id, { project });
 
   return (
-    <div className="grid grid-cols-[1fr_auto_1fr_1fr_1fr_auto] gap-2 items-center">
-      <Input
-        className={cn({ "border-green-600 bg-green-50": isActive })}
-        disabled
-        type="time"
-        value={formatTime(entry.startTime)}
-      />
-      to
-      <Input
-        className={cn({ "border-green-600 bg-green-50": isActive })}
-        disabled
-        type="time"
-        value={endTime ? formatTime(endTime) : ""}
-      />
+    <div
+      className={cn(
+        "flex flex-col gap-2 rounded-xl border bg-card/70 p-3 shadow-sm sm:grid sm:grid-cols-[1fr_auto_1fr_1fr_1fr_auto] sm:items-center sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none",
+        { "border-green-600 bg-green-50": isActive },
+      )}
+    >
+      <div className="grid grid-cols-[1fr_auto_1fr] gap-2 items-center sm:contents">
+        <Input
+          className={cn({ "border-green-600 bg-green-50": isActive })}
+          disabled
+          type="time"
+          value={formatTime(entry.startTime)}
+        />
+        <span className="text-center text-sm text-muted-foreground">to</span>
+        <Input
+          className={cn({ "border-green-600 bg-green-50": isActive })}
+          disabled
+          type="time"
+          value={endTime ? formatTime(endTime) : ""}
+        />
+      </div>
       <Input
         className={cn({ "border-green-600 bg-green-50": isActive })}
         disabled
         value={`${duration.toFixed(1)} hours`}
       />
       <ProjectSelect
-        className={cn({ "border-green-600 bg-green-50": isActive })}
+        className={cn("h-11 sm:h-9", {
+          "border-green-600 bg-green-50": isActive,
+        })}
         onValueChange={handleProjectChange}
         value={entry.project}
       />
-      {entry.endTime ? (
-        <WorkEntryActions entry={entry} entries={entries} />
-      ) : (
-        <ActiveWorkEntryActions entry={entry} entries={entries} />
-      )}
+      <div className="flex justify-end border-t pt-2 sm:border-0 sm:pt-0">
+        {entry.endTime ? (
+          <WorkEntryActions entry={entry} entries={entries} />
+        ) : (
+          <ActiveWorkEntryActions entry={entry} entries={entries} />
+        )}
+      </div>
     </div>
   );
 }

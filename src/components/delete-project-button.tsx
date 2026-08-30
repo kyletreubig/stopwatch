@@ -1,3 +1,5 @@
+import { Trash2 } from "lucide-react";
+
 import { deleteProject } from "@/api/delete-project";
 import { type Project } from "@/db";
 
@@ -20,8 +22,13 @@ export function DeleteProjectButton({ project }: { project: Project }) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="w-full" variant="destructive">
-          Delete
+        <Button
+          aria-label="Delete project"
+          className="w-full"
+          variant="destructive"
+        >
+          <Trash2 className="sm:hidden" />
+          <span className="hidden sm:inline">Delete</span>
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

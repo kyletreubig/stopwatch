@@ -34,16 +34,18 @@ export function Projects() {
   const totalAllocation = sumProjectAllocations(projects ?? []);
 
   return (
-    <div className="p-4 border rounded shadow">
-      <h2>Projects </h2>
+    <div className="rounded-xl border p-3 shadow sm:p-4">
+      <h2 className="text-2xl font-semibold sm:text-base sm:font-medium">
+        Projects
+      </h2>
 
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Table className="table-auto">
           <TableHeader>
             <TableRow>
               <TableHead>Project</TableHead>
-              <TableHead className="w-32">Allocation</TableHead>
-              <TableHead className="w-32" />
+              <TableHead className="w-20 sm:w-32">Allocation</TableHead>
+              <TableHead className="w-20 sm:w-32" />
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -52,7 +54,7 @@ export function Projects() {
                 <TableCell>{project.name}</TableCell>
                 <TableCell>
                   <Input
-                    className="w-24"
+                    className="w-20 sm:w-24"
                     max={100}
                     min={0}
                     onChange={(event) => {
@@ -72,20 +74,21 @@ export function Projects() {
               </TableRow>
             ))}
             <TableRow>
-              <TableCell>
+              <TableCell colSpan={2}>
                 <Input
+                  className="min-w-44"
                   placeholder="New project name"
                   {...form.register("name", { required: true })}
                 />
               </TableCell>
-              <TableCell />
               <TableCell>
                 <Button
                   className="w-full"
                   disabled={!form.formState.isDirty || !form.formState.isValid}
                   type="submit"
                 >
-                  <Plus /> Add
+                  <Plus />
+                  <span className="hidden sm:inline">Add</span>
                 </Button>
               </TableCell>
             </TableRow>
@@ -93,7 +96,7 @@ export function Projects() {
         </Table>
       </form>
 
-      <div className="mt-4 flex items-center justify-between gap-2">
+      <div className="mt-4 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
         <div className="text-sm">
           Total allocation: {totalAllocation}%
           {totalAllocation > 100 && (
@@ -101,6 +104,7 @@ export function Projects() {
           )}
         </div>
         <Button
+          className="h-11 w-full sm:h-9 sm:w-auto"
           onClick={() => void resetProjectAllocations()}
           variant="outline"
         >
